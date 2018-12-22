@@ -1,0 +1,19 @@
+﻿@model GroupingModel;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @Html.Label("Current amount of players per group (N): ")
+    @Html.ValueFor(m => m.NPlayersPerGroup)
+
+    <form action="@Url.Action("Index", "Home")" method="POST">
+        @Html.Label("Set new N value: ")
+        @Html.TextBoxFor(m => m.NPlayersPerGroup)
+        <input type="submit" value="Add players" />
+    </form>
+</div>
