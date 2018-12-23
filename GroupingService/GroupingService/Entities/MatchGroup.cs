@@ -27,8 +27,13 @@ namespace GroupingService.Entities
 
         public long MaxWaitingTime { get; set; }
 
-        public long AvgWaitingTime { get; set; }
+        public double AvgWaitingTime { get; set; }
 
         public IList<Player> Players { get; set; }
+
+        public MatchGroup()
+        {
+            Players = new List<Player>();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace GroupingService.Entities
 
         public int Remoteness { get; set; }
 
-        // Milliseconds
-        public long WaitingTime { get; set; }
+        // in Ticks
+        public long QueueIngressTime { get; set; }
     }
 }

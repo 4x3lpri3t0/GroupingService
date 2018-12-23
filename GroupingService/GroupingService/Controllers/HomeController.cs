@@ -5,11 +5,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GroupingService.Models;
+using GroupingService.Services;
 
 namespace GroupingService.Controllers
 {
     public class HomeController : Controller
     {
+        public MatchCreatorService MatchCreatorService { get; }
+
+        public HomeController()
+        {
+            // TODO: Dependency Injection
+            this.MatchCreatorService = new MatchCreatorService();
+        }
+
         public IActionResult Index()
         {
             GroupingModel model = new GroupingModel();
@@ -20,6 +29,7 @@ namespace GroupingService.Controllers
         [HttpPost]
         public IActionResult Index(GroupingModel model)
         {
+            MatchCreatorService.SetPlayersPerMatch(model.NPlayersPerGroup);
             return View("AddPlayers", model: model);
         }
 
