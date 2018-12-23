@@ -1,47 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using GroupingService.Entities;
+using GroupingService.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Text;
 
 namespace GroupingService.Controllers
 {
     [ApiController]
     public class UserController : ControllerBase
     {
-        //// GET: api/PlayerGrouping
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        public MatchCreatorService MatchCreatorService { get; }
 
-        //// GET: api/PlayerGrouping/5
-        //[HttpGet("{id}", Name = "Get")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        public UserController()
+        {
+            // TODO: Dependency Injection
+            this.MatchCreatorService = new MatchCreatorService();
+        }
+
+        private const string FileName = "match_groups.txt";
 
         [HttpGet()]
-        [Route("get/")]
-        public string Get()
+        [Route("download/")]
+        public ActionResult Download()
         {
-            return "Hello world!";
+            var file = MatchCreatorService.GenerateMatches(5); // TODO: Pass param
+            
+            string now = DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss_");
+            string fileName = now + FileName;
+
+            return File(Encoding.UTF8.GetBytes(file.ToString()),
+                "text/plain",
+                fileName);
         }
 
         // POST: {appDomain}/addUser?name=[name]&skill=[double]&remoteness=[int]
         [HttpPost()]
         [Route("addUser/")]
-        public void AddUser(
-            [FromQuery(Name = "name")] string name,
-            [FromQuery(Name = "skill")] double skill,
-            [FromQuery(Name = "remoteness")] int remoteness)
+        public JsonResult AddUser([FromQuery] Player player)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+            // TODO: Validate name and ranges...
+
+            MatchCreatorService.AddPlayer(player);
+
+            return new JsonResult(new
+            {
+                success = true
+            });
         }
     }
 }

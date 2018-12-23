@@ -4,6 +4,17 @@
 #tblData th {
     width: 25%;
 }
+#tblData img {
+    cursor: pointer;
+}
+.alert {
+    display: none;
+    position: fixed;
+    top: 5px;
+    left: 2%;
+    width: 96%;
+    text-align: center;
+}
 
 /* Boilerplate
 -------------------------------------------------- */

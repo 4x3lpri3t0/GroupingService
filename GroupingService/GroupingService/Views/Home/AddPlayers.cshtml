@@ -5,13 +5,16 @@
 }
 
 <body>
+    <div class="alert alert-success alert-dismissable">
+        <strong>Player added to queue!</strong>
+    </div>
     <h1>Add Players</h1>
     @Html.Label("Amount of players per group: ")
     @Html.ValueFor(m => m.NPlayersPerGroup)
     <br /> <br />
 
     <input type="button" name="btnNewPlayer" class="btn" value="New Player" onclick="AddPlayer()" id="btnNewPlayer" />
-    <input type="button" name="btnResults" class="btn" value="Download file with results" />
+    <input type="button" name="btnResults" class="btn" value="Download file with results" onclick="GetResults()" />
 
     <br /> <br />
     <table id="tblData">
@@ -25,6 +28,4 @@
         </thead>
         <tbody></tbody>
     </table>
-
-
 </body>
