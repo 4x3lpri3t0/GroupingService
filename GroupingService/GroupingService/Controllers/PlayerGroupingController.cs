@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GroupingService.Controllers
 {
@@ -40,9 +41,9 @@ namespace GroupingService.Controllers
         [Route("addUser/")]
         public JsonResult AddUser([FromQuery] Player player)
         {
-            // TODO: Validate name and ranges...
-
-            MatchCreatorService.AddPlayer(player, _hostingEnvironment);
+            Task task = Task.Run(() => {
+                MatchCreatorService.AddPlayer(player, _hostingEnvironment);
+            });
 
             return new JsonResult(new
             {

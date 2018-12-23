@@ -1,5 +1,6 @@
 ﻿using GroupingService.Entities;
 using GroupingService.Repositories;
+using GroupingService.Utils;
 using Microsoft.AspNetCore.Hosting;
 using System.Text;
 
@@ -25,7 +26,7 @@ namespace GroupingService.Services
             foreach (var match in PlayerQueue.GetMatches())
             {
                 // Parse data
-                PlayerQueue.AppendMatchToStringBuilder(sb, match);
+                MatchUtils.AppendMatchToStringBuilder(sb, match);
             }
 
             return sb;
