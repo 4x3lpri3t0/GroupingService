@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -24,12 +25,6 @@ namespace GroupingService.Controllers
         //    return "value";
         //}
 
-        //// POST: api/PlayerGrouping
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
         [HttpGet()]
         [Route("get/")]
         public string Get()
@@ -37,11 +32,16 @@ namespace GroupingService.Controllers
             return "Hello world!";
         }
 
-        // PUT: api/PlayerGrouping/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // POST: {appDomain}/addUser?name=[name]&skill=[double]&remoteness=[int]
+        [HttpPost()]
+        [Route("addUser/")]
+        public void AddUser(
+            [FromQuery(Name = "name")] string name,
+            [FromQuery(Name = "skill")] double skill,
+            [FromQuery(Name = "remoteness")] int remoteness)
         {
-            
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
         }
     }
 }

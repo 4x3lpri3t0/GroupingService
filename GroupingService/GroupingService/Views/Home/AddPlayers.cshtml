@@ -4,7 +4,27 @@
     ViewData["Title"] = "AddPlayers";
 }
 
-<h1>Add Players</h1>
-@Html.Label("Amount of players per group: ")
-@Html.ValueFor(m => m.NPlayersPerGroup)
+<body>
+    <h1>Add Players</h1>
+    @Html.Label("Amount of players per group: ")
+    @Html.ValueFor(m => m.NPlayersPerGroup)
+    <br /> <br />
 
+    <input type="button" name="btnNewPlayer" class="btn" value="New Player" onclick="AddPlayer()" id="btnNewPlayer" />
+    <input type="button" name="btnResults" class="btn" value="Download file with results" />
+
+    <br /> <br />
+    <table id="tblData">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Skill (0.0 - 1.0)</th>
+                <th>Remoteness (0 - 100)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+
+</body>
