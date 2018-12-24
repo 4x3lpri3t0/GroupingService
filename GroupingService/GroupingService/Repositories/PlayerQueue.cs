@@ -35,11 +35,13 @@ namespace GroupingService.Repositories
 
         public static IList<Queue<Player>> GetQueues()
         {
-            var queues = new List<Queue<Player>>();
-            queues.Add(lowSkillLowRemoQueue);
-            queues.Add(lowSkillHighRemoQueue);
-            queues.Add(highSkillLowRemoQueue);
-            queues.Add(highSkillHighRemoQueue);
+            var queues = new List<Queue<Player>>
+            {
+                lowSkillLowRemoQueue,
+                lowSkillHighRemoQueue,
+                highSkillLowRemoQueue,
+                highSkillHighRemoQueue
+            };
             return queues;
         }
 
