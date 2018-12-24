@@ -1,5 +1,4 @@
 ﻿using GroupingService.Entities;
-using Microsoft.Extensions.Hosting;
 using System.Text;
 
 namespace GroupingService.Services

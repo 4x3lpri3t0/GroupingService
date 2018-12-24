@@ -1,6 +1,7 @@
 ﻿using GroupingService.Entities;
 using System;
 using System.Text;
+
 using static System.Math;
 
 namespace GroupingService.Utils

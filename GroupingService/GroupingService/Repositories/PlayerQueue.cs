@@ -13,22 +13,22 @@ namespace GroupingService.Repositories
     // I wanted to change it to be a Singleton or something a bit more ideal, sorry!
     public static class PlayerQueue
     {
-        // Threshold which, if surpassed, we try to assign the player to any match as priority
+        // Threshold which, if surpassed, we try to assign the 
+        // player to any match as soon as possible
         public static int PlayerMaxWaitingTimeMs = 5_000; // 5 seconds
 
-        // TODO: Use ConcurrentQueue
+        // TODO: Have a more dynamic way to handle skill/remoteness balance
         private static readonly Queue<Player> lowSkillLowRemoQueue = new Queue<Player>();
         private static readonly Queue<Player> lowSkillHighRemoQueue = new Queue<Player>();
         private static readonly Queue<Player> highSkillLowRemoQueue = new Queue<Player>();
         private static readonly Queue<Player> highSkillHighRemoQueue = new Queue<Player>();
         
-        // TODO: Make it a custom priority queue so it reorganizes its top players internally
+        // TODO: Make it a custom priority queue so it reorganizes its oldest players internally
         private static readonly Queue<Player> topPriorityQueue = new Queue<Player>();
 
         private static IList<MatchGroup> matches = new List<MatchGroup>();
 
-        // Default - Unless specified in model through website
-        // TODO: Move to config file
+        // Default - Unless specified through website in first page
         private static int playersPerMatch = 2;
 
         private static int currentMatchNumber = 1;
@@ -99,9 +99,9 @@ namespace GroupingService.Repositories
             }
         }
 
+        // TODO: Create a better algorithm to determine optimal moment to add a user to a match.
         private static bool TryCreateMatch(Queue<Player> queue, IHostingEnvironment hostingEnvironment)
         {
-            // TODO: Create a better algorithm to determine optimal moment to add a user to a queue.
             lock (queue)
             {
                 if (queue.Count + topPriorityQueue.Count < playersPerMatch)

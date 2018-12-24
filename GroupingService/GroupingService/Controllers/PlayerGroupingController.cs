@@ -2,7 +2,6 @@
 using GroupingService.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Text;
 using System.Threading.Tasks;
 
