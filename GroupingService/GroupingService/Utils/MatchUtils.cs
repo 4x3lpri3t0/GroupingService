@@ -31,7 +31,7 @@ namespace GroupingService.Utils
 
         internal static void UpdateMatchCounters(TempAccumulator accum, Player player)
         {
-            var playerWaitingTime = (DateTime.Now.Ticks - player.QueueIngressTime) / 10_000; // Ticks to ms
+            long playerWaitingTime = (DateTime.Now.Ticks - player.QueueIngressTime) / 10_000; // Ticks to ms
 
             accum.minSkill = Min(accum.minSkill, player.Skill);
             accum.maxSkill = Max(accum.maxSkill, player.Skill);

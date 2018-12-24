@@ -11,12 +11,11 @@ namespace GroupingService.Controllers
 {
     public class HomeController : Controller
     {
-        public MatchCreatorService MatchCreatorService { get; }
+        private readonly IMatchCreatorService _matchCreatorService;
 
-        public HomeController()
+        public HomeController(IMatchCreatorService matchCreatorService)
         {
-            // TODO: Dependency Injection
-            this.MatchCreatorService = new MatchCreatorService();
+            _matchCreatorService = matchCreatorService;
         }
 
         public IActionResult Index()
@@ -29,7 +28,7 @@ namespace GroupingService.Controllers
         [HttpPost]
         public IActionResult Index(GroupingModel model)
         {
-            MatchCreatorService.SetPlayersPerMatch(model.NPlayersPerGroup);
+            _matchCreatorService.SetPlayersPerMatch(model.NPlayersPerGroup);
             return View("AddPlayers", model: model);
         }
 

@@ -1,6 +1,6 @@
 ﻿using GroupingService.Entities;
 using GroupingService.Services;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Text;
@@ -12,15 +12,14 @@ namespace GroupingService.Controllers
     public class UserController : ControllerBase
     {
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IMatchCreatorService _matchCreatorService;
 
-        public MatchCreatorService MatchCreatorService { get; }
-
-        public UserController(IHostingEnvironment hostingEnvironment)
+        public UserController(
+            IHostingEnvironment hostingEnvironment,
+            IMatchCreatorService matchCreatorService)
         {
             _hostingEnvironment = hostingEnvironment;
-
-            // TODO: Dependency Injection
-            this.MatchCreatorService = new MatchCreatorService();
+            _matchCreatorService = matchCreatorService;
         }
 
         private const string FileName = "all_match_groups_for_browser.txt";
@@ -29,7 +28,7 @@ namespace GroupingService.Controllers
         [Route("download/")]
         public ActionResult Download()
         {
-            var file = MatchCreatorService.DownloadAllMatches();
+            var file = _matchCreatorService.DownloadAllMatches();
 
             return File(Encoding.UTF8.GetBytes(file.ToString()),
                 "text/plain",
@@ -42,7 +41,7 @@ namespace GroupingService.Controllers
         public JsonResult AddUser([FromQuery] Player player)
         {
             Task task = Task.Run(() => {
-                MatchCreatorService.AddPlayer(player, _hostingEnvironment);
+                _matchCreatorService.AddPlayer(player);
             });
 
             return new JsonResult(new
