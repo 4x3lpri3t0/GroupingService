@@ -2,6 +2,7 @@
 using GroupingService.Utils;
 using Microsoft.AspNetCore.Hosting;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -12,11 +13,14 @@ namespace GroupingService.Repositories
     // with something fast in order to advance with the rest of the exercise. Sorry!
     public static class PlayerQueue
     {
+        // TODO: Use ConcurrentQueue
         private static Queue<Player> unassignedQueue = new Queue<Player>();
 
         private static IList<MatchGroup> matches = new List<MatchGroup>();
 
-        private static int playersPerMatch = 5; // Default
+        // Default - Unless specified in model (or changed here)
+        // TODO: Move to config file
+        private static int playersPerMatch = 2;
 
         private static int currentMatchNumber = 1;
 
@@ -40,32 +44,32 @@ namespace GroupingService.Repositories
 
         private static void TryCreateMatch(IHostingEnvironment hostingEnvironment)
         {
-            if (unassignedQueue.Count < playersPerMatch)
-            {
-                return;
-            }
-
             // Naive approach
             // TODO: Create algorithm to determine best moment to add a user to a queue.
+            lock (unassignedQueue) {
+                if (unassignedQueue.Count < playersPerMatch)
+                {
+                    return;
+                }
 
-            int playersAdded = 0;
-            var match = new MatchGroup();
-            var accum = new TempAccumulator();
-            while (playersAdded < playersPerMatch)
-            {
-                var player = unassignedQueue.Dequeue();
-                MatchUtils.UpdateMatchCounters(accum, player);
-                playersAdded++;
-                match.Players.Add(player);
+                int playersAdded = 0;
+                var match = new MatchGroup();
+                var accum = new TempAccumulator();
+                while (playersAdded < playersPerMatch)
+                {
+                    var player = unassignedQueue.Dequeue();
+                    MatchUtils.UpdateMatchCounters(accum, player);
+                    playersAdded++;
+                    match.Players.Add(player);
+                }
+
+                MatchUtils.UpdateMatchStats(accum, match, playersAdded, currentMatchNumber);
+
+                matches.Add(match);
+                WriteMatchToFile(match, hostingEnvironment);
+                currentMatchNumber++;
             }
-
-            MatchUtils.UpdateMatchStats(accum, match, playersAdded, currentMatchNumber);
-
-            matches.Add(match);
-            WriteMatchToFile(match, hostingEnvironment);
-            currentMatchNumber++;
         }
-
 
         private static void WriteMatchToFile(MatchGroup match, IHostingEnvironment hostingEnvironment)
         {

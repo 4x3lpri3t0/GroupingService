@@ -22,7 +22,7 @@ namespace GroupingService.Controllers
         public IActionResult Index()
         {
             GroupingModel model = new GroupingModel();
-            model.NPlayersPerGroup = 5; // Default
+            model.NPlayersPerGroup = 2; // Default
             return View(model: model);
         }
 
